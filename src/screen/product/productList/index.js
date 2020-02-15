@@ -4,13 +4,13 @@ import { View, Text, StyleSheet, FlatList, Alert, Dimensions, Image, ActivityInd
 import { TouchableOpacity, TextInput } from 'react-native-gesture-handler';
 
 const baseURL = 'http://pedidos-test.herokuapp.com/api/item'
-const perPage = 7;
+const perPage = 100;
 const initSearchTerm = ''
 
 const { width } = Dimensions.get('window')
 const widthScreen = (width - 125)
 
-const ProductList = ({ route, navigation }) => {
+const ProductList = ({ navigation }) => {
 
     const [data, setData] = React.useState([]);
     const [page, setPage] = React.useState(1);
@@ -22,6 +22,7 @@ const ProductList = ({ route, navigation }) => {
         React.useCallback(() => {
             // Do something when the screen is focused
             loadRepositories()
+            console.log(data)
             return () => {
             };
         }, [])
@@ -29,7 +30,7 @@ const ProductList = ({ route, navigation }) => {
 
     loadRepositories = async () => {
 
-        console.log('1')
+        //console.log('1')
 
         try {
             if (loading) return;
@@ -77,9 +78,13 @@ const ProductList = ({ route, navigation }) => {
         <TouchableOpacity
             style={styles.listItem}
             onPress={() => {
-                navigation.navigate('Product', { item: item })
+                navigation.navigate('ProductItem', { item: item })
             }}
         >
+            <Image
+                style={styles.listItemImage}
+                source={{uri: 'data:image/jpeg;base64,' + item.imagem}}
+            ></Image>
             <Text>{item.descricao}</Text>
             <Text>{item.valor}</Text>
         </TouchableOpacity>
@@ -181,7 +186,7 @@ const styles = StyleSheet.create({
     },
 
     listItem: {
-        backgroundColor: '#fff',
+        backgroundColor: '#FFF',
         width: 150,
         height: 200,
         margin: 15,
@@ -193,10 +198,11 @@ const styles = StyleSheet.create({
     },
     listItemImage: {
         width: 100,
-        height: 150,
+        height: 100,
         borderRadius: 50,
         borderWidth: 0.5,
         borderColor: '#111',
+        marginBottom:20
     },
     loading: {
         alignSelf: 'center',

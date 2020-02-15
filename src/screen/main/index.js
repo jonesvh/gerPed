@@ -23,13 +23,23 @@ function Main({ navigation }){
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.mainBodyItem}
-                    onPress={() => { navigation.navigate('ProductList'),{reload:reload}}}
+                    onPress={() => { navigation.navigate('ProductList')}}
                 >
                     <Image
                         source={require('../../icons/png/012-menu.png')}
                         style={styles.mainBodyItemImage}
                     ></Image>
                     <Text style={styles.mainBodyItemText}>PRODUTOS</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.mainBodyItem}
+                    onPress={() => { navigation.navigate('CategoryList')}}
+                >
+                    <Image
+                        source={require('../../icons/png/034-soda.png')}
+                        style={styles.mainBodyItemImage}
+                    ></Image>
+                    <Text style={styles.mainBodyItemText}>CATEGORIAS</Text>
                 </TouchableOpacity>
             </View>
         </ScrollView>
@@ -53,6 +63,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderBottomRightRadius: 10,
         borderBottomLeftRadius: 10,
+        marginBottom:15
     },
     mainHeaderText: {
         //fontFamily:'Montserrat',
@@ -78,7 +89,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         width: 150,
         height: 150,
-        marginTop: 35,
+        marginBottom: 35,
         borderRadius: 15,
         borderWidth: 3,
         borderColor: '#40E0D0',

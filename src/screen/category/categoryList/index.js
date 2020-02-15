@@ -3,14 +3,14 @@ import { useFocusEffect } from '@react-navigation/native';
 import { View, Text, StyleSheet, FlatList, Alert, Dimensions, Image, ActivityIndicator } from 'react-native';
 import { TouchableOpacity, TextInput } from 'react-native-gesture-handler';
 
-const baseURL = 'http://pedidos-test.herokuapp.com/api/item'
+const baseURL = 'http://pedidos-test.herokuapp.com/api/categoria'
 const perPage = 7;
 const initSearchTerm = ''
 
 const { width } = Dimensions.get('window')
 const widthScreen = (width - 125)
 
-const ProductList = ({ route, navigation }) => {
+const CategoryList = ({ navigation }) => {
 
     const [data, setData] = React.useState([]);
     const [page, setPage] = React.useState(1);
@@ -28,8 +28,6 @@ const ProductList = ({ route, navigation }) => {
     );
 
     loadRepositories = async () => {
-
-        console.log('1')
 
         try {
             if (loading) return;
@@ -54,30 +52,11 @@ const ProductList = ({ route, navigation }) => {
         }
     }
 
-    addItem = async () => {
-
-        try {
-            const response = await fetch(baseURL, {
-                method: 'post',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    descricao: 'Testaoooo',
-                    valor: 10
-                }),
-            });
-        } catch (error) {
-            Alert.alert(error.toString())
-        }
-    }
-
     renderItem = ({ item }) => (
         <TouchableOpacity
             style={styles.listItem}
             onPress={() => {
-                navigation.navigate('Product', { item: item })
+                navigation.navigate('CategoryItem', { item: item })
             }}
         >
             <Text>{item.descricao}</Text>
@@ -87,7 +66,7 @@ const ProductList = ({ route, navigation }) => {
 
     onLayout = () => {
         const { width } = Dimensions.get('window')
-        const itemWidth = 150
+        const itemWidth = 300
         const numColumns = Math.floor(width / itemWidth)
         return numColumns
     }
@@ -98,20 +77,20 @@ const ProductList = ({ route, navigation }) => {
             return (
                 <View style={styles.loading}>
                     <ActivityIndicator></ActivityIndicator>
-                    <Text>Carregando mais produtos</Text>
+                    <Text>Carregando mais categorias</Text>
                 </View>
             )
         } else {
             if (data.length == 0 && searchTerm.length != 0) {
                 return (
                     <View style={styles.loading}>
-                        <Text>Nenhum produto encontrado</Text>
+                        <Text>Nenhuma categoria encontrado</Text>
                     </View>
                 )
             } else {
                 return (
                     <View style={styles.loading}>
-                        <Text>Procure por um produto</Text>
+                        <Text>Procure por uma categoria</Text>
                     </View>
                 )
             }
@@ -123,7 +102,7 @@ const ProductList = ({ route, navigation }) => {
             <View style={styles.search}>
                 <TextInput
                     style={styles.searchInput}
-                    placeholder={'Digite o nome de um produto...'}
+                    placeholder={'Digite o nome de uma categoria...'}
                     onChangeText={(text) => {
                         if (!text == '') {
                             setSearchTerm(text)
@@ -156,7 +135,7 @@ const ProductList = ({ route, navigation }) => {
                 <TouchableOpacity
                     style={styles.add}
                     onPress={() => {
-                        navigation.navigate('NewProduct')
+                        navigation.navigate('NewCategory')
                     }}
                 >
                     <Text style={{ color: '#fff', fontWeight: "bold", fontSize: 30 }}>+</Text>
@@ -182,8 +161,8 @@ const styles = StyleSheet.create({
 
     listItem: {
         backgroundColor: '#fff',
-        width: 150,
-        height: 200,
+        width: 300,
+        height: 70,
         margin: 15,
         borderRadius: 15,
         borderWidth: 3,
@@ -250,4 +229,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ProductList;
+export default CategoryList;

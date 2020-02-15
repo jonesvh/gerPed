@@ -5,23 +5,35 @@ import ImagePicker from 'react-native-image-picker';
 
 const baseURL = 'http://pedidos-test.herokuapp.com/api/item'
 const options = {
-    title: 'mypicapp',
-    takePhotoButtonTitle: 'take photo with your camera',
-    chooseFromLibraryButtonTitle: 'choose photo from library'
+    title: 'gerPed',
+    takePhotoButtonTitle: 'Tirar foto do produto',
+    chooseFromLibraryButtonTitle: 'Escolher foto do produto na galeria',
+    maxWidth:150,
+    maxHeight:150,
+    allowsEditing:true,
+    storageOptions: {
+        skipBackup: true,
+        path: 'images',
+    },
+
 }
 const Product = ({ route, navigation }) => {
 
     const item = route.params.item
 
+    //console.log(item)
+
     const [codItem, setCodItem] = React.useState(item._id);
     const [descItem, setDescItem] = React.useState(item.descricao);
     const [valItem, setValItem] = React.useState(item.valor);
 
-    const [img, setImg] = React.useState(null)
+    const [img, setImg] = React.useState(item.imagem)
+    const [uri, setUri] = React.useState(source = { uri: 'data:image/jpeg;base64,' + item.imagem})
+
 
     updateItem = async () => {
 
-        console.log(baseURL + codItem)
+        console.log(img)
 
         try {
             const response = await fetch(baseURL + '/' + codItem, {
@@ -32,7 +44,8 @@ const Product = ({ route, navigation }) => {
                 },
                 body: JSON.stringify({
                     descricao: descItem,
-                    valor: valItem
+                    valor: valItem,
+                    imagem: img
                 }),
             });
             navigation.navigate('ProductList')
@@ -44,7 +57,7 @@ const Product = ({ route, navigation }) => {
     deleteItem = async () => {
 
         try {
-            const response = await fetch(baseURL + '/' + codItem, {
+            await fetch(baseURL + '/' + codItem, {
                 method: 'delete',
                 headers: {
                     Accept: 'application/json',
@@ -59,22 +72,22 @@ const Product = ({ route, navigation }) => {
 
     myFun = () => {
         ImagePicker.showImagePicker(options, (response) => {
-            console.log('Response = ', response);
+            //console.log('Response = ', response);
 
             if (response.didCancel) {
-                console.log('User cancelled image picker');
+                //console.log('User cancelled image picker');
             }
             else if (response.error) {
-                console.log('Image Picker Error: ', response.error);
+                //console.log('Image Picker Error: ', response.error);
             }
 
             else {
                 let source = { uri: response.uri };
 
                 // You can also display the image using data:
-                // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-
-                setImg(source)
+                //let source = { uri: 'data:image/jpeg;base64,' + response.data };
+                setImg(response.data)
+                setUri(source)
             }
         });
     }
@@ -83,7 +96,7 @@ const Product = ({ route, navigation }) => {
         <KeyboardAvoidingView style={styles.container} behavior={"position"}>
             <View style={styles.item}>
                 <View style={styles.picker}>
-                    {img ? <Image source={img} style={styles.pickerImage}></Image> : <TouchableOpacity style={styles.pickerButton} onPress={myFun}><Text>Escolher Imagem...</Text></TouchableOpacity>}
+                    {img ? <Image source={uri} style={styles.pickerImage}></Image> : <TouchableOpacity style={styles.pickerButton} onPress={myFun}><Text>Escolher Imagem...</Text></TouchableOpacity>}
                 </View>
             </View>
             <View style={styles.item}>
@@ -110,7 +123,7 @@ const Product = ({ route, navigation }) => {
                 <TouchableOpacity
                     style={styles.buttonAdd}
                     onPress={() => {
-                        item.descricao != descItem || item.valor != valItem ? updateItem() : null
+                        item.descricao != descItem || item.valor != valItem || item.imagem != img ? updateItem() : null
                         //console.log(item.descricao,item.valor, descItem, valItem)
                     }}
                 >
