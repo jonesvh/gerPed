@@ -73,7 +73,15 @@ const CategoryItem = ({ route, navigation }) => {
                 <TouchableOpacity
                     style={styles.buttonDel}
                     onPress={() => {
-                        deleteItem()
+                        Alert.alert(
+                            'Deletar Produto',
+                            'Deseja realmente deletar esse produto?',
+                            [
+                              {text: 'Cancelar',onPress: () => null},
+                              {text: 'Deletar', onPress: () => deleteItem()},
+                            ],
+                            {cancelable: false},
+                          );
                     }}
                 >
                     <Text style={styles.buttonText} >Deletar</Text>

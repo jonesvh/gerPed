@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { View, Text, StyleSheet, Image, Alert,TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native';
+import { View, Text, StyleSheet, Image, Alert, TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
 const baseURL = 'http://pedidos-test.herokuapp.com/api/item'
@@ -8,9 +8,9 @@ const options = {
     title: 'gerPed',
     takePhotoButtonTitle: 'Tirar foto do produto',
     chooseFromLibraryButtonTitle: 'Escolher foto do produto na galeria',
-    maxWidth:150,
-    maxHeight:150,
-    allowsEditing:true,
+    maxWidth: 150,
+    maxHeight: 150,
+    allowsEditing: true,
     storageOptions: {
         skipBackup: true,
         path: 'images',
@@ -28,7 +28,7 @@ const Product = ({ route, navigation }) => {
     const [valItem, setValItem] = React.useState(item.valor);
 
     const [img, setImg] = React.useState(item.imagem)
-    const [uri, setUri] = React.useState(source = { uri: 'data:image/jpeg;base64,' + item.imagem})
+    const [uri, setUri] = React.useState(source = { uri: 'data:image/jpeg;base64,' + item.imagem })
 
 
     updateItem = async () => {
@@ -96,7 +96,13 @@ const Product = ({ route, navigation }) => {
         <KeyboardAvoidingView style={styles.container} behavior={"position"}>
             <View style={styles.item}>
                 <View style={styles.picker}>
-                    {img ? <Image source={uri} style={styles.pickerImage}></Image> : <TouchableOpacity style={styles.pickerButton} onPress={myFun}><Text>Escolher Imagem...</Text></TouchableOpacity>}
+                    <TouchableOpacity style={styles.pickerButton} onPress={myFun}>
+                        <View style={styles.pickerButtonText}>
+                            <Text>Escolher Imagem...</Text>
+                        </View>
+                        <Image source={uri} style={styles.pickerImage}>
+                        </Image>
+                    </TouchableOpacity>
                 </View>
             </View>
             <View style={styles.item}>
@@ -132,7 +138,15 @@ const Product = ({ route, navigation }) => {
                 <TouchableOpacity
                     style={styles.buttonDel}
                     onPress={() => {
-                        deleteItem()
+                        Alert.alert(
+                            'Deletar Produto',
+                            'Deseja realmente deletar esse produto?',
+                            [
+                              {text: 'Cancelar',onPress: () => null},
+                              {text: 'Deletar', onPress: () => deleteItem()},
+                            ],
+                            {cancelable: false},
+                          );
                         //console.log(item.descricao,item.valor, descItem, valItem)
                     }}
                 >
@@ -206,21 +220,32 @@ const styles = StyleSheet.create({
 
     },
     pickerImage: {
-        width: 250,
-        height: 250,
-        borderRadius: 125
-    },
-    pickerButton: {
-        marginTop: 10,
-        width: 150,
-        height: 30,
+        width: 200,
+        height: 200,
+        borderRadius: 125,
         borderWidth: 1,
         borderColor: '#40E0D0',
-        borderRadius:10,
-        alignItems:"center",
-        justifyContent:"center"
-    }
-
+    },
+    pickerButton: {
+        width: 150,
+        height: 30,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    pickerButtonText: {
+        paddingLeft: 5,
+        position: "absolute",
+        zIndex: 1,
+        fontSize: 15,
+        color: '#111',
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: '#40E0D0',
+        color: '#111',
+        fontWeight: "bold",
+        opacity: 0.5,
+        backgroundColor:'#fff'
+    },
 });
 
 export default Product;

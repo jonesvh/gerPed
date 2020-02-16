@@ -8,9 +8,9 @@ const options = {
     title: 'gerPed',
     takePhotoButtonTitle: 'Tirar foto do produto',
     chooseFromLibraryButtonTitle: 'Escolher foto do produto na galeria',
-    maxWidth:150,
-    maxHeight:150,
-    allowsEditing:true,
+    maxWidth: 150,
+    maxHeight: 150,
+    allowsEditing: true,
     storageOptions: {
         skipBackup: true,
         path: 'images',
@@ -38,7 +38,7 @@ const NewProduct = ({ navigation }) => {
                 body: JSON.stringify({
                     descricao: nameProduct,
                     valor: valorProduct,
-                    imagem:img
+                    imagem: img
                 }),
             });
         } catch (error) {
@@ -61,7 +61,7 @@ const NewProduct = ({ navigation }) => {
                 //let source = { uri: response.uri };
 
                 // You can also display the image using data:
-                let source = { uri: 'data:image/jpeg;base64,' + response.data};
+                let source = { uri: 'data:image/jpeg;base64,' + response.data };
 
                 //console.log(response.data.toString())
 
@@ -74,7 +74,13 @@ const NewProduct = ({ navigation }) => {
     return (
         <KeyboardAvoidingView style={styles.item} behavior={"position"}>
             <View style={styles.picker}>
-                {img ? <Image source={uri} style={styles.pickerImage}></Image> : <TouchableOpacity style={styles.pickerButton} onPress={myFun}><Text>Escolher Imagem...</Text></TouchableOpacity>}
+                <TouchableOpacity style={styles.pickerButton} onPress={myFun}>
+                    <View style={styles.pickerButtonText}>
+                        <Text>Escolher Imagem...</Text>
+                    </View>
+                    <Image source={uri} style={styles.pickerImage}>
+                    </Image>
+                </TouchableOpacity>
             </View>
             <View style={styles.item}>
                 <Text>Descricao do Produto</Text>
@@ -121,7 +127,7 @@ const styles = StyleSheet.create({
     },
     item: {
         marginTop: 20,
-        alignItems:"center"
+        alignItems: "center"
     },
     itemInput: {
         paddingLeft: 10,
@@ -174,12 +180,23 @@ const styles = StyleSheet.create({
         marginTop: 10,
         width: 150,
         height: 30,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    pickerButtonText: {
+        paddingLeft: 5,
+        position: "absolute",
+        zIndex: 1,
+        fontSize: 15,
+        color: '#111',
         borderWidth: 1,
+        borderRadius: 10,
         borderColor: '#40E0D0',
-        borderRadius:10,
-        alignItems:"center",
-        justifyContent:"center"
-    }
+        color: '#111',
+        fontWeight: "bold",
+        opacity: 0.5,
+        backgroundColor: '#fff'
+    },
 
 });
 
