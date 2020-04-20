@@ -13,7 +13,7 @@ function Main({ navigation }){
             <View style={styles.mainBody}>
                 <TouchableOpacity
                     style={styles.mainBodyItem}
-                    onPress={() => { navigation.navigate('Order') }}
+                    onPress={() => { navigation.navigate('OrderList') }}
                 >
                     <Image
                         source={require('../../icons/png/003-order.png')}

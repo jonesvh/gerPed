@@ -33,7 +33,7 @@ const Product = ({ route, navigation }) => {
 
     updateItem = async () => {
 
-        console.log(img)
+        //console.log(img)
 
         try {
             const response = await fetch(baseURL + '/' + codItem, {
@@ -48,7 +48,7 @@ const Product = ({ route, navigation }) => {
                     imagem: img
                 }),
             });
-            navigation.navigate('ProductList')
+            navigation.navigate('ProductList', { refresh:true })
         } catch (error) {
             Alert.alert(error.toString())
         }

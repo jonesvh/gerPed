@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 
 import Main from './src/screen/main'
-import Order from './src/screen/orders'
+import OrderList from './src/screen/order/orderList'
 
 //produto
 import ProductList from './src/screen/product/productList'
@@ -34,8 +34,8 @@ function App() {
                     }}
                 />
                 <Stack.Screen
-                    name="Order"
-                    component={Order}
+                    name="OrderList"
+                    component={OrderList}
                     options={{
                         headerStyle: {
                             backgroundColor: '#40E0D0'
